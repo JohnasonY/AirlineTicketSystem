@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class AirlineTicketSystem {
+public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     //Predefine administrator username and password
@@ -12,7 +12,6 @@ public class AirlineTicketSystem {
     private static Client client;
     private static Administrator admin;
 
-    //instantiate the flight list before reading the file
     private static List<Flight> flights;
 
     public static void main(String[] args) {
@@ -109,7 +108,7 @@ public class AirlineTicketSystem {
 
             switch (choice) {
                 case 1:
-                    addFlightUI();
+                    addFlightUI(flights);
                     break;
                 case 2:
                     viewAllFlights(flights);
@@ -158,7 +157,7 @@ public class AirlineTicketSystem {
         }
     }
 
-    private static void addFlightUI() {
+    private static void addFlightUI(List<Flight> flights) {
         System.out.println("Enter flight details (ID, Company, From, To, Departure Date and Time, Arrival Date and Time, Available Seats):");
         System.out.println("Example format: 101, Delta, New York, Los Angeles, 2024-05-10 08:00, 2024-05-10 11:00, 180");
         String input = scanner.nextLine();
@@ -173,7 +172,7 @@ public class AirlineTicketSystem {
                 String arrival = details[5];
                 int seats = Integer.parseInt(details[6]);
                 Flight flight = new Flight(id, company, from, to, departure, arrival, seats);
-                Database.addFlight(flight);
+                Database.addFlight(flight, flights);
                 System.out.println("Flight added: " + company + " from " + from + " to " + to);
             } catch (NumberFormatException e) {
                 System.out.println("Error: Incorrect number format in input. Please try again.");
@@ -186,6 +185,7 @@ public class AirlineTicketSystem {
 
 
     private static void viewAvailableFlights(List<Flight> flights) {
+        //List<Flight> flights = Database.getFlights();
         if (flights.isEmpty()) {
             System.out.println("No available flights.");
         } else {
@@ -200,6 +200,7 @@ public class AirlineTicketSystem {
 
 
     private static void viewAllFlights(List<Flight> flights) {
+        //List<Flight> flights = Database.getFlights();
         if (flights.isEmpty()) {
             System.out.println("No flights available.");
         } else {
