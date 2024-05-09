@@ -7,11 +7,18 @@ public class AirlineTicketSystem {
     //Predefine administrator username and password
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin123";
+
+    //instantiate the client and admin
     private static Client client;
     private static Administrator admin;
 
+    //instantiate the flight list before reading the file
+    private static List<Flight> flights;
+
     public static void main(String[] args) {
         admin = new Administrator(ADMIN_USERNAME, ADMIN_PASSWORD, "System Administrator", "admin@airline.com"); // Admin is pre-created
+        //only do this once!!!
+        flights = Database.getFlights();
         System.out.println("Welcome to the Airline Ticket System");
         while (true) {
             System.out.println("=====================================");
@@ -105,7 +112,7 @@ public class AirlineTicketSystem {
                     addFlightUI();
                     break;
                 case 2:
-                    viewAllFlights();
+                    viewAllFlights(flights);
                     break;
                 case 3:
                     return; // Logout
@@ -132,7 +139,7 @@ public class AirlineTicketSystem {
 
             switch (choice) {
                 case 1:
-                    viewAvailableFlights();
+                    viewAvailableFlights(flights);
                     break;
                 case 2:
                     bookTicketUI();
@@ -178,8 +185,7 @@ public class AirlineTicketSystem {
 
 
 
-    private static void viewAvailableFlights() {
-        List<Flight> flights = Database.getFlights();
+    private static void viewAvailableFlights(List<Flight> flights) {
         if (flights.isEmpty()) {
             System.out.println("No available flights.");
         } else {
@@ -193,8 +199,7 @@ public class AirlineTicketSystem {
     }
 
 
-    private static void viewAllFlights() {
-        List<Flight> flights = Database.getFlights();
+    private static void viewAllFlights(List<Flight> flights) {
         if (flights.isEmpty()) {
             System.out.println("No flights available.");
         } else {
@@ -214,7 +219,7 @@ public class AirlineTicketSystem {
         try {
             int flightId = Integer.parseInt(bookingDetails[0]);
             String seatNum = bookingDetails[1];
-            Flight flight = Database.getFlights().stream()
+            Flight flight = flights.stream()
                     .filter(f -> f.getID() == flightId)
                     .findFirst()
                     .orElse(null);
@@ -244,7 +249,7 @@ public class AirlineTicketSystem {
             if (ticket != null) {
                 client.cancelReservations(ticket);
                 // Increment the seats available for the flight
-                Flight flight = Database.getFlights().stream()
+                Flight flight = flights.stream()
                         .filter(f -> f.getID() == ticket.getFlightID())
                         .findFirst()
                         .orElse(null);
