@@ -9,8 +9,9 @@ class Database {
     private static final String FlightsInfo = "flights.txt";
     public static HashMap<String, User> users = new HashMap<>();
 
-    public static void addFlight(Flight flight) {
+    public static void addFlight(Flight flight, List<Flight> flights) {
         if (validateFlight(flight)) {
+            /*
             try (FileWriter fw = new FileWriter(FlightsInfo, true);
                  BufferedWriter bw = new BufferedWriter(fw);
                  PrintWriter out = new PrintWriter(bw)) {
@@ -18,6 +19,8 @@ class Database {
             } catch (IOException e) {
                 System.out.println("Error writing to file: " + e.getMessage());
             }
+            */
+            flights.add(flight);
         } else {
             System.out.println("Failed to add flight. Invalid flight details.");
         }
@@ -36,7 +39,7 @@ class Database {
         }
     }
 
-
+    //make as static method so it doesn't need to be instantitated before calling
     public static List<Flight> getFlights() {
         ArrayList<Flight> flights = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(FlightsInfo))) {
