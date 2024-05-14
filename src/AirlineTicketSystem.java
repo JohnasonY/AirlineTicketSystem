@@ -1,7 +1,12 @@
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+/**
+ * The main class for integrating all other classes
+ * @author Jiaxing Rong
+ */
+public class AirlineTicketSystem {
+
     private static Scanner scanner = new Scanner(System.in);
 
     //Predefine administrator username and password
@@ -14,6 +19,10 @@ public class Main {
 
     private static List<Flight> flights;
 
+    /**
+     * the main menu of the airline ticket system
+     * @param args main function's parameter
+     */
     public static void main(String[] args) {
         admin = new Administrator(ADMIN_USERNAME, ADMIN_PASSWORD, "System Administrator", "admin@airline.com"); // Admin is pre-created
         //only do this once!!!
@@ -56,6 +65,9 @@ public class Main {
         }
     }
 
+    /**
+     * register a new client's menu
+     */
     private static void registerNewClient() {
         System.out.print("Enter new username: ");
         String userName = scanner.nextLine();
@@ -70,6 +82,10 @@ public class Main {
         Database.registerClient(newClient);
     }
 
+    /**
+     * Administrator login UI
+     * @return true for Administrator's username and password are correct
+     */
     private static boolean adminLogin() {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -78,6 +94,10 @@ public class Main {
         return username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD);
     }
 
+    /**
+     * client login UI
+     * @return true for client exists and username and password are correct
+     */
     private static boolean clientLogin() {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -93,6 +113,9 @@ public class Main {
         return false;
     }
 
+    /**
+     * The menu after Administrator successfully login,
+     */
     private static void adminMenu() {
         while (true) {
             System.out.println("======================");
@@ -121,6 +144,9 @@ public class Main {
         }
     }
 
+    /**
+     * The menu after client successfully login
+     */
     private static void clientMenu() {
         while (true) {
             System.out.println("===========================");
@@ -157,6 +183,10 @@ public class Main {
         }
     }
 
+    /**
+     * Add a new flight UI for Administrator
+     * @param flights the list storing all current available flights
+     */
     private static void addFlightUI(List<Flight> flights) {
         System.out.println("Enter flight details (ID, Company, From, To, Departure Date and Time, Arrival Date and Time, Available Seats):");
         System.out.println("Example format: 101, Delta, New York, Los Angeles, 2024-05-10 08:00, 2024-05-10 11:00, 180");
@@ -183,7 +213,10 @@ public class Main {
     }
 
 
-
+    /**
+     * view all available flights for the client
+     * @param flights the list storing all current available flights
+     */
     private static void viewAvailableFlights(List<Flight> flights) {
         //List<Flight> flights = Database.getFlights();
         if (flights.isEmpty()) {
@@ -199,6 +232,10 @@ public class Main {
     }
 
 
+    /**
+     * view all available flights for the Administrator
+     * @param flights the list storing all current available flights
+     */
     private static void viewAllFlights(List<Flight> flights) {
         //List<Flight> flights = Database.getFlights();
         if (flights.isEmpty()) {
@@ -214,6 +251,9 @@ public class Main {
     }
 
 
+    /**
+     * reserve a ticket UI for the client
+     */
     private static void bookTicketUI() {
         System.out.print("Enter Flight ID and Seat Number to book (FlightID, SeatNum): ");
         String[] bookingDetails = scanner.nextLine().split(", ");
@@ -235,10 +275,16 @@ public class Main {
         }
     }
 
+    /**
+     * see all reserved tickets UI for the client
+     */
     private static void viewReservationsUI() {
         client.viewReservations();
     }
 
+    /**
+     * cancel a reserved ticket UI for the client
+     */
     private static void cancelReservationUI() {
         System.out.print("Enter Ticket ID to cancel: ");
         try {
